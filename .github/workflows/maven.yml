@@ -1,0 +1,16 @@
+name: Heroku Deployment
+on: 
+  push:
+    branches: [master]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v2
+      - name: Deploy to heroku using an action
+        uses: akhileshns/heroku-deploy@v3.2.6
+        with:
+          heroku_api_key: ${{secrets.SBHEROKU_API_KEY}}
+          heroku_app_name: ${{secrets.SBHEROKU_APP_NAME}}
+          heroku_email: ${{secrets.SBHEROKU_EMAIL}}
