@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.model.Producto;
@@ -43,4 +44,9 @@ public class ProductoREST {
 	private Optional<Producto> buscarProducto(@PathVariable("id") Long id ){
 		return this.productoService.findByIdProducto(id);	
 	}	
+	@RequestMapping("/error")
+	@ResponseBody
+	public String getErrorPath() {
+		return "<center><h1>Something went wrong</h1></center>";
+	}
 }
