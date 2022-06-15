@@ -1,12 +1,9 @@
 package com.example.demo.rest;
 
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,29 +21,26 @@ public class ProductoREST {
 	@Autowired
 	private ProductoService productoService;
 	
+	@GetMapping
+	private ArrayList<Producto> ListarProductos(){
+		return productoService.findAllProducto();
+	}	
 	@PostMapping
-	private ResponseEntity<Producto> guardar(@RequestBody Producto producto ){
-		Producto temporal =productoService.create(producto);
-		try {
-			return ResponseEntity.created(new URI("producto"+temporal.getId())).body(temporal);
-		}catch(Exception e){
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-		}
+	private Producto guardar(@RequestBody Producto producto ){
+		return this.productoService.saveProducto(producto);
 		
 	}
 	
-	@GetMapping
-	private ArrayList<Producto> ListarProductos(){
-		return productoService.getAllProductos();
+	@DeleteMapping(path="/{id}")
+	private String EliminarProducto(@PathVariable("id") Long id){
+		boolean ok=this.productoService.deleteProducto(id);
+		if(ok) {
+			return "Se eliminó el usuario con id " +id;
+		}
+		return "No se eliminó el usuario con id " +id;
 	}
-	
-	@DeleteMapping
-	private ResponseEntity<Void> EliminarProducto(@RequestBody Producto producto ){
-		productoService.delete(producto);
-		return ResponseEntity.ok().build();		
-	}
-	@GetMapping(value="{id}")
-	private ResponseEntity<Optional<Producto>> buscarProducto(@PathVariable("id") Long id ){
-		return ResponseEntity.ok(productoService.findById(id));		
+	@GetMapping(path="/{id}")
+	private Optional<Producto> buscarProducto(@PathVariable("id") Long id ){
+		return this.productoService.findByIdProducto(id);	
 	}	
 }

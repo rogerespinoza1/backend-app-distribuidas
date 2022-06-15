@@ -12,21 +12,27 @@ import com.example.demo.repository.ProductoRepository;
 
 @Service
 public class ProductoService {
+	
 	@Autowired
 	private ProductoRepository productoRepository;
 	
-	public Producto create(Producto producto) {
+	public Producto saveProducto(Producto producto) {
 		return productoRepository.save(producto);
 	}
 	
-	public ArrayList<Producto> getAllProductos(){
+	public ArrayList<Producto> findAllProducto(){
 		return (ArrayList<Producto>)productoRepository.findAll();		
 	}
-	public void delete(Producto producto) {
-		productoRepository.delete(producto);
+	public boolean deleteProducto(Long id) {
+		try {
+			productoRepository.deleteById(id);
+			return true;
+		}catch(Exception err){
+			return false;
+		}
 	}
 	
-	public Optional<Producto> findById(Long id) {
+	public Optional<Producto> findByIdProducto(Long id) {
 		return productoRepository.findById(id);
 	}	
 }
